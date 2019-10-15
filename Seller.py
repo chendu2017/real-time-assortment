@@ -8,7 +8,7 @@ import itertools
 import json
 import math
 
-def softmax(preference):
+def MNL(preference):
     #Input: List, OUtput: List
     score = [math.exp(k) for k in preference]
     total = sum(score)
@@ -39,7 +39,7 @@ class Seller():
                         offered_set_plus_no = [0] + list(offered_set)
                         preference_offered_set = [preference[item_id] for item_id in offered_set_plus_no]
                         
-                        probability = softmax(preference_offered_set)
+                        probability = MNL(preference_offered_set)
                         probability = {item_id:probability[k] for k,item_id in enumerate(offered_set_plus_no)}
                         
                         Seller.PROBABILITY[key] = probability 
