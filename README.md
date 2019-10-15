@@ -37,3 +37,16 @@
     item: 列表，其中每个元素是一个字典；这个列表中的商品是以 "价格降低" 进行排列
     
     customer: 列表，其中每个元素是一个字典；列表的index即为customer_type；preference表示这个类型的客户对所有商品的偏好，第一项0表示对不购买的偏好；注意，这个是preference，不是utility；所以如果用MNL的话，需要用exp()来计算
+    
+    
+## Reference
+
+     除了【1】之外，其他都是我最近读的paper。【4】也介绍了阿里目前是怎么做的，比较有借鉴意义
+     
+    【1】Golrezaei N, Nazerzadeh H, Rusmevichientong P. Real-time optimization of personalized assortments[J]. Management Science, 2014, 60(6): 1532-1551.
+    
+    【2】Davis J, Gallego G, Topaloglu H. Assortment planning under the multinomial logit model with totally unimodular constraint structures[J]. Work in Progress, 2013.
+    
+    【3】Rusmevichientong P, Shen Z J M, Shmoys D B. Dynamic assortment optimization with a multinomial logit choice model and capacity constraint[J]. Operations research, 2010, 58(6): 1666-1680.
+    
+    【4】Feldman J, Zhang D, Liu X, et al. Customer choice models versus machine learning: Finding optimal product displays on Alibaba[J]. Available at SSRN, 2019.
