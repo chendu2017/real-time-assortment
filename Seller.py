@@ -21,7 +21,6 @@ class Seller():
     def __init__(self,item,customer, RANKING = False):
         
         #--- 按价格从高到低排序后，给到seller; Seller.item[0]表示第0个商品 （不购买）
-        item = [{'id':0,'price':0,'inventory':9999999}] + item
         self.item = {indiv['id']:indiv for indiv in item}
         
         #--- 可能提供的所有集合
@@ -129,6 +128,7 @@ class Seller():
         primal_problem.solve()
         
         if primal_problem.status == grb.GRB.Status.OPTIMAL:
+            print('successfully get hindsight upper bound')
             return primal_problem.ObjVal
         
         else:   
@@ -137,7 +137,8 @@ class Seller():
             
 if __name__ == '__main__':
     
-    ITEM = [{'id':1,'price':10,'inventory':5,'initial_inventory':5},
+    ITEM = [{'id':0,'price':0,'inventory':9999999,'initial_inventory':9999999},
+            {'id':1,'price':10,'inventory':5,'initial_inventory':5},
             {'id':2,'price':6,'inventory':10,'initial_inventory':10},
             {'id':3,'price':5,'inventory':10,'initial_inventory':10},
             {'id':4,'price':4,'inventory':10,'initial_inventory':10},
