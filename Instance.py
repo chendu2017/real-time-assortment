@@ -36,13 +36,50 @@ class Instance():
         self.log['Day{}'.format(t)] = {'customer_type':customer.type,
                                        'provided_set':provided_set,
                                        'customer_choice':customer_choice,
-                                       'inventory': [it['inventory'] for it in self.item]
+                                       'inventory': [it['inventory'] for it in self.item],
+                                       'revenue_today':customer_choice*self.item[customer_choice]['price']
                                        }
+        
+        
+    def Record_Ratio_to_Upper_bound(self):
+        #卖家计算hindsight的收益上限,并记录到Instance中
+        self.revenue_upper_bound = self.seller.Calculate_Upper_bound(self.customer_sequence)
+    
+    
+    def Run(self,time_length):
+        #调用Run函数，进行模拟
+        for t in range(1,1+time_length):
+            self.Run_Single_Day(t)  
+            
+            
+    def Draw_Revenue_Day_by_Day(self):
+        import numpy as np
+        import matplotlib.pyplot as plt
+        
+        #计算画图用的数据
+        revenue_accumulated = np.cumsum([self.log['Day{}'.format(t)]['revenue_today'] for t in range(1,1+len(self.customer_sequence))])
+        
+        #画图
+        figure_setting = {'markersize':20,
+                          'linewidth':5,
+                          }
+        
+        fig = plt.figure(figsize=(20,10))
+        ax = fig.subplots()
+        plt.xlabel(r'$t$')
+        plt.ylabel('Revenue')
+        plt.title('Seller\'s revenue and the upper bound')
+        
+        ax.plot(x = revenue_accumulated, y = range(len(self.customer_sequence)),  #卖家的收益图
+                label='Paat', marker='o',**figure_setting)
+        ax.plot(x = [self.revenue_upper_bound]*len(self.customer_sequence),y = range(len(self.customer_sequence)), #upper_bound收益，是一条与x轴平行的直线
+                label='Upper_Bound',marker='D',**figure_setting)
     
     
 if __name__ == '__main__':
     
-    ITEM = [{'id':1,'price':10,'inventory':5},
+    ITEM = [{'id':0,'price':0,'inventory':9999999,'initial_inventory':9999999},
+            {'id':1,'price':10,'inventory':5},
             {'id':2,'price':6,'inventory':10},
             {'id':3,'price':5,'inventory':10},
             {'id':4,'price':4,'inventory':10},
