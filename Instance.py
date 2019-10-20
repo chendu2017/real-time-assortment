@@ -23,11 +23,13 @@ class Instance():
     
     def Run_Single_Day(self,t):
         #生成一个新客户
-        customer = self.generator.Generate_Customer()
+        func_type = 1                             #---生成方式
+        customer = self.generator.Generate_Customer(func_type))
         #卖家提供商品集合
         provided_set = self.seller.Provide_Set(customer.type)
         #客户做出购买选择
-        customer_choice = customer.Choose_Product(provided_set)
+        choose_type = 1                               #--- 选择方式
+        customer_choice = customer.Choose_Product(provided_set,self.seller,choose_type)
         #卖家更新库存、计算收益等
         self.seller.Update_Inventory(customer_choice)
         self.revenue += self.item[customer_choice]['price']
