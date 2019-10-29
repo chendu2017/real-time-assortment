@@ -1,4 +1,12 @@
-# Prof.Rong-s_Simulation
+# Paat: Real-time optimization of personalized assortments
+
+This is a simulation code for literature 【1】, accomplished by me and other classmates together (Songsong Chen:https://github.com/song95326  and Yongli Chen:https://github.com/YongLi628) 
+
+We implemented the main algorithm proposed in 【1】Section 3. By incorporating replenishment decisions for the seller, we resonablely extended the range of possible application of this algorithm. A piece-wise linear penalty function is leveraged to obtain a higher overall revenue. 
+
+Run Main.py, then waiting for the simulation result.
+
+Below are some notices for my classmates, which don't matter.
 
 ## 目前我大概分为了三个模块
 
