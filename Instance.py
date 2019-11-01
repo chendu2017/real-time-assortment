@@ -27,7 +27,9 @@ class Instance():
         self.customer_sequence = []
         self.generator = Generator(customer)
         self.revenue = {}
-        self.revenue_upper_bound = {}
+        #self.revenue_upper_bound = {}
+        #只需要获取最后一天的upper_bound
+        self.revenue_upper_bound=0
         
         self.time_length = 0
         self.IB_function_type = ''
@@ -36,7 +38,7 @@ class Instance():
         
         self.log = {}
 
-        
+    #不需要每天计算（record_ratio_to_upper_bound在后续程序中并未调用）    
     def Record_Ratio_to_Upper_bound(self):
         #卖家计算hindsight的收益上限,并记录到Instance中
         self.revenue_upper_bound = self.seller.Calculate_Upper_bound(self.customer_sequence)
@@ -86,12 +88,11 @@ class Instance():
             if setting['replenishment'] == True:
                 #查看是否需要补货，并订货
                 self.seller.Replenish_Products(t) 
-            
-            if setting['run_again'] == False:
+            #只在最后一天计算upper_bound
+            if t==time_length:
                 #商家的收益
-                start = time.clock()
-                self.revenue_upper_bound['Day{}'.format(t)] = self.seller.Calculate_Upper_bound(self.customer_sequence)
-                print('{}天的计算hindsight收益上限，耗时:'.format(t),time.clock()-start,'秒\n')
+                self.revenue_upper_bound= self.seller.Calculate_Upper_bound(self.customer_sequence)
+                
             
             
             #日志
@@ -120,11 +121,12 @@ class Instance():
         plt.title('Seller\'s revenue and the upper bound')
         
         #upper bound
-        upper_line_x,upper_line_y = range(last_day),[self.revenue_upper_bound['Day{}'.format(t)] for t in range(1,1+last_day)]
+        lst=[self.revenue_upper_bound]*last_day
+        upper_line_x,upper_line_y = range(last_day),lst
         ax.plot(upper_line_x,upper_line_y , #upper_bound收益，是一条与x轴平行的直线
                 label='Upper_Bound',marker='D',**figure_setting)
-        ax.text(x= round(len(self.log)*0,1),y=round(self.revenue_upper_bound['Day{}'.format(last_day)]*0.9)-5,
-                    s = 'hindsight收益：{}'.format(round(self.revenue_upper_bound['Day{}'.format(last_day)],2)))
+        ax.text(x= round(len(self.log)*0,1),y=round(self.revenue_upper_bound*0.9)-5,
+                    s = 'hindsight收益：{}'.format(round(self.revenue_upper_bound],2)))
         
         
         #计算画图用的数据
@@ -138,7 +140,7 @@ class Instance():
 
             ax.plot(seller_line_x, seller_line_y,  #卖家的收益图
                     label='{}:{}%'.format(IB_function_type,
-                          round(seller_line_y[-1]/self.revenue_upper_bound['Day{}'.format(last_day)]*100,3)), 
+                          round(seller_line_y[-1]/self.revenue_upper_bound*100,3)), 
                            marker='o',**figure_setting)
             
         ax.legend()
